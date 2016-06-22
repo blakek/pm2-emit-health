@@ -1,0 +1,30 @@
+{
+  "name": "pm2-health-emit",
+  "version": "0.0.1",
+  "description": "PM2 health indication sender",
+  "main": "app.js",
+  "dependencies": {
+    "cpu-stat": "^2.0.1",
+    "cpu-stats": "^1.0.0",
+    "pmx": "latest",
+    "request": "latest",
+    "shelljs": "^0.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pm2-hive/pm2-emit-health.git"
+  },
+  "config": {
+    "ip": "127.0.0.1",
+    "port": 4242
+  },
+  "apps": [
+    {
+      "merge_logs": true,
+      "max_memory_restart": "200M",
+      "script": "app.js"
+    }
+  ],
+  "author": "Keymetrics Inc.",
+  "license": "MIT"
+}
