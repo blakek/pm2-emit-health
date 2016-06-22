@@ -1,6 +1,7 @@
 var pmx = require('pmx');
 var fs = require('fs');
-var request = require('request');
+var express = require('express');
+var ipfilter = require('ipfilter');
 var cpuStats = require('cpu-stats');
 var shelljs = require('shelljs');
 
@@ -26,7 +27,8 @@ pmx.initModule({
   }
 
 }, function(err, conf) {
-  var cpu_used = 0, mem_used = 0;
+  var status_val = 1400, cpu_used = 0, mem_used = 0;
+  var app = express();
   setInterval(function() {
 
     //CPU retrieval
@@ -56,19 +58,14 @@ pmx.initModule({
     var free_mem_pour = (100 * (1 - free_mem / total_mem)).toFixed(1);
     mem_used = free_mem_pour;
     });
-
-    //Calc status level
     var status_val = 1400 * (100 - (cpu_used * 2/3 + mem_used * 1/3)) / 100;
-    console.log(cpu_used, mem_used, status_val);
-    //POST to led
-    request.post({
-      url: 'http://' + conf.ip + ':' + conf.port,
-      method: "POST",
-      json : true,
-      headers: { "content-type": "application/json" },
-      body: {status: status_val}
-    }, function(err, res) {
-        //console.log(res.body);
-    });
   }, 1000);
+
+    //POST
+    if (conf.ips !== "")
+      app.use(ipfilter(conf.ips.join(','), {mode: 'allow'}));
+    app.get('/', function(req, res) {
+      res.send(status_val);
+    });
+    app.listen(conf.port);
 });

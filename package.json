@@ -6,8 +6,9 @@
   "dependencies": {
     "cpu-stat": "^2.0.1",
     "cpu-stats": "^1.0.0",
+    "express": "latest",
+    "ipfilter": "0.0.4",
     "pmx": "latest",
-    "request": "latest",
     "shelljs": "^0.7.0"
   },
   "repository": {
@@ -15,8 +16,8 @@
     "url": "https://github.com/pm2-hive/pm2-emit-health.git"
   },
   "config": {
-    "ip": "127.0.0.1",
-    "port": 4242
+    "port": 4242,
+    "ips": ""
   },
   "apps": [
     {
